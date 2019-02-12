@@ -6,9 +6,10 @@ config :ectoing, Ectoing.Repo,
   adapter: Ecto.Adapters.MySQL,
   database: "ectoing_repo",
   username: "root",
-  password: "root",
+  password: "",
   hostname: "localhost"
 
+config :ectoing, ecto_repos: [Ectoing.Repo]
 
 # This configuration is loaded before any dependency and is restricted
 # to this project. If another project depends on this project, this
