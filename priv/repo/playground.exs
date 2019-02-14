@@ -96,6 +96,27 @@ defmodule Playground do
             where: u.id == 4,
             preload: [:messages]
 
+    username = "%doe"
+    query = from u in User,
+            select: u.username,
+            where: fragment("? LIKE BINARY ?", u.username, ^username)
+    
+    query = User 
+            |> select([u], u.username)
+            |> where([u], fragment("? LIKE BINARY ? ", u.username, ^username))
+
+    # SELECT count(u0.`id`) FROM `users` AS u0 WHERE (u0.`inserted_at` >= CAST(? AS date)) [{2016, 5, 1}]        
+    query = from u in User,
+            select: count(u.id),
+            where: u.inserted_at >= type(^Ecto.Date.from_erl({2016, 05, 01}), Ecto.Date)
+
+    query_by_field = :username 
+    query = from u in User,
+            where: like(field(u, ^query_by_field), ^username)
+
+    query = User 
+            |> where([u], like(field(u, ^query_by_field), ^username))
+
     Repo.all(query)
   end
 
